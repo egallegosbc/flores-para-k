@@ -1,0 +1,5 @@
+body {
+  overflow: hidden;
+  background: #050407;  
+  animation: aparecer 2.5s ease 10.5s forwards;
+}
