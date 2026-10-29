@@ -24,7 +24,7 @@ let inicio = performance.now();
 
 // ---------- Semilla: el mismo número siempre da el mismo ramo ----------
 let SEMILLA = 1;                   // cuando encuentres el ramo que te gusta, pon aquí su número
-const MODO_BUSQUEDA = false;        // true: cada toque prueba otra semilla | false: ramo fijo
+const MODO_BUSQUEDA = false;       // true: cada toque prueba otra semilla | false: ramo fijo
 let semillaActual = SEMILLA;
 
 // Generador de números "aleatorios" repetible (mulberry32)
@@ -69,6 +69,7 @@ const IDIOMAS = [
   ['Aloha au iā ʻoe', 'Hawaiano'],
 ];
 const FUENTE = '"Cormorant Garamond", Georgia, serif';
+let idiomaActual = Math.floor(Math.random() * IDIOMAS.length);   // idioma distinto en cada visita
 
 const rand  = (a, b) => a + aleatorio() * (b - a);
 const pick  = arr => arr[Math.floor(aleatorio() * arr.length)];
@@ -417,7 +418,7 @@ function loop(now) {
 function textoLateral(seg) {
   const alpha = fase(seg, 7.2, 1.8);
   if (alpha <= 0) return;
-  const [frase, idioma] = IDIOMAS[(semillaActual - 1) % IDIOMAS.length];
+  const [frase, idioma] = IDIOMAS[idiomaActual];
   const angosta = W < 600;                       // en celular va arriba para no tapar flores
   const x = angosta ? 16 : Math.max(16, W * 0.07);
   const y = angosta ? H * 0.1 : H / 2;
@@ -455,6 +456,7 @@ function resize() {
 // En modo búsqueda, cada toque prueba la siguiente semilla; en modo fijo, repite el mismo ramo
 addEventListener('pointerdown', () => {
   if (MODO_BUSQUEDA) semillaActual++;
+  idiomaActual = (idiomaActual + 1) % IDIOMAS.length;   // cada toque, otro idioma
   construirRamo();
   inicio = performance.now();
 });
